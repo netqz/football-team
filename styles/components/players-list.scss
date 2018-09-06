@@ -8,87 +8,130 @@
     border-radius: 3px;
     box-shadow: 0 0 8px rgba(0, 0, 0, .25);
 
-    & > ol
+    & > ul
     {
+        padding: 0;
+
+        list-style-type: none;
+
         & > li
         {
-            height: 2rem;
-            line-height: 2rem;
-        }
-    }
-}
+            padding: 0 1rem;
 
-.bench-header
-{
-    display: flex;
+            height: 3rem;
+            line-height: 3rem;
 
-    padding: 1rem 0;
+            font-size: 18px;
 
-    border-bottom: 1px solid $color-light-gray;
+            cursor: pointer;
 
-    & > *
-    {
-        margin: 0 0 0 1rem;
-    }
+            background: $color-white;
+            color: $color-black;
 
-    button
-    {
-        display: inline-block;
+            transition: color .25s ease-in-out, background .25s ease-in-out;
 
-        margin: 0 0 0 1rem;
-        padding: 0 1rem;
+            &:hover
+            {
+                background: $color-light-gray;
+            }
 
-        height: 1.5rem;
-
-        font-size: 14px;
-        text-align: center;
-        text-decoration: none;
-
-        outline: none;
-        cursor: pointer;
-
-        &.add
-        {
-            color: white;
-            background-color: #4CAF50;
-
-            border: none;
-            border-radius: 1.5rem;
-            box-shadow: 0 0 4px rgba(0, 0, 0, .125);
-        }
-
-        &#remove
-        {
-            color: #606060;
-            background-color: #f5f5f5;
-
-            border: 1px solid #c0c0c0;
-            border-radius: 3px;
-            box-shadow: 0 0 4px rgba(0, 0, 0, .125);
+            &.active-player
+            {
+                background: $color-light-gray;
+                color: $color-green;
+            }
         }
     }
 
-    & > form
+    & > .bench-header
     {
-        & > input
+        display: flex;
+
+        padding: 1rem 0;
+
+        border-bottom: 1px solid $color-light-gray;
+
+        & > *
         {
-            padding: 0.5rem;
+            margin: 0 0 0 1rem;
+        }
+
+        button
+        {
+            margin: 0 0 0 1rem;
 
             height: 1.5rem;
+            line-height: 1.5rem;
 
-            border: 1px solid $color-dark-gray;
-            border-radius: 1rem;
+            background: $color-white;
+
+            border: 1px solid $color-white;
 
             outline: none;
+            cursor: pointer;
 
-            box-shadow: 0 0 4px rgba(0, 0, 0, .125)inset;
-
-            transition: border-color .25s ease-in-out, box-shadow .25s ease-in-out;
-
-            &:focus
+            &.add
             {
-                border-color: $color-blue;
-                box-shadow: 0 0 6px rgba(0, 0, 0, .25)inset;
+                padding: 0 1rem;
+
+                border: 1px solid $color-green;
+                background: $color-green;
+                color: $color-white;
+
+                border-radius: 1rem;
+
+                box-shadow: 0 0 8px rgba(0, 0, 0, .125);
+
+                transition: box-shadow .25s ease-in-out;
+
+                &:hover
+                {
+                    box-shadow: 0 0 8px rgba(0, 0, 0, .5);
+                }
+            }
+
+            &#remove
+            {
+                box-shadow: none;
+                color: #db1f1f;
+
+                transition: color .25s ease-in-out, box-shadow .25s ease-in-out;
+
+                &:hover:not([disabled])
+                {
+                    box-shadow: 0 0 8px rgba(0, 0, 0, .375);
+                }
+
+                &[disabled]
+                {
+                    color: #606060;
+                    cursor: default;
+                }
+            }
+        }
+
+        & > form
+        {
+            & > input
+            {
+                padding: 0.5rem;
+
+                height: 1.5rem;
+
+                border: 1px solid $color-dark-gray;
+                border-radius: 1rem;
+
+                outline: none;
+
+                box-shadow: 0 0 4px rgba(0, 0, 0, .125)inset;
+
+                transition: border-color .25s ease-in-out, box-shadow .25s ease-in-out;
+
+                &:focus
+                {
+                    border-color: $color-green;
+                    box-shadow: 0 0 6px rgba(0, 0, 0, .25)inset;
+                }
             }
         }
     }

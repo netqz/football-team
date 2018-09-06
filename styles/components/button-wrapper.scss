@@ -1,0 +1,72 @@
+.button-wrapper
+{
+    align-self: center;
+}
+
+#put-on-bench,
+#put-on-field
+{
+    display: block;
+
+    position: relative;
+    margin: 0 0 1rem 0;
+
+    height: 3rem;
+    width: 3rem;
+
+    border-radius: 100%;
+    border: none;
+
+    outline: none;
+    cursor: pointer;
+
+    background-repeat: no-repeat;
+    background-position: center;
+
+    box-shadow: 0 0 8px rgba(0, 0, 0, .125);
+
+    &:hover:not([disabled])
+    {
+        box-shadow: 0 0 8px rgba(0, 0, 0, .375);
+    }
+
+    &[disabled]
+    {
+        box-shadow: none;
+    }
+
+    &:last-child
+    {
+        margin: 0;
+    }
+
+    & > svg
+    {
+        position: absolute;
+        top: 0; right: 0; bottom: 0; left: 0;
+    }
+}
+
+#put-on-bench
+{
+    background: $color-white url('./images/arrow-left.svg');
+
+    transition: box-shadow .25s ease-in-out, background .25s ease-in-out;
+
+    &:not([disabled])
+    {
+        background: $color-white url('./images/arrow-left-hover.svg');
+    }
+}
+
+#put-on-field
+{
+    background: $color-white url('./images/arrow-right.svg');
+
+    transition: box-shadow .25s ease-in-out, background .25s ease-in-out;
+
+    &:not([disabled])
+    {
+        background: $color-white url('./images/arrow-right-hover.svg');
+    }
+}

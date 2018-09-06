@@ -1,9 +1,20 @@
 import React, { Component } from "react"
+import PlayersList from "./PlayersList"
 
 class Main extends Component {
     constructor () {
         super()
-        this.state = { player: '', playersOnBench: [], playersOnField: [], selected: ''}
+        this.state = { player: '', playersOnBench: [], playersOnField: [], selected: '', classHandler: ''}
+    }
+
+    componentDidMount () {
+        const remove = document.getElementById('remove')
+        const putOnField = document.getElementById('put-on-field')
+        const putOnBench = document.getElementById('put-on-bench')
+
+        remove.disabled = true
+        putOnBench.disabled = true
+        putOnField.disabled = true
     }
 
     handleAdd (event) {
@@ -23,6 +34,7 @@ class Main extends Component {
         } else {
             return
         }
+
     }
 
     handleDelete () {
@@ -30,6 +42,9 @@ class Main extends Component {
         const dropPlayer = this.state.playersOnBench.filter((_player) => {
             return _player !== player
         })
+
+        const remove = document.getElementById('remove')
+        remove.disabled = true
 
         this.setState({ playersOnBench: dropPlayer })
     }
@@ -39,10 +54,20 @@ class Main extends Component {
         this.setState({ player: player })
     }
 
-    handleSelect (_player) {
+    handleSelect (_player, event) {
+        const classHandler = event.target
+
+        if(this.state.classHandler) {
+            this.state.classHandler.classList.remove('active-player')
+        }
+
+        classHandler.classList.add('active-player')
+        this.setState({ classHandler: event.target })
+
         const remove = document.getElementById('remove')
         const putOnField = document.getElementById('put-on-field')
         const putOnBench = document.getElementById('put-on-bench')
+
 
         const player = _player
         const playersOnBench = this.state.playersOnBench
@@ -64,29 +89,28 @@ class Main extends Component {
         putOnBench.disabled = false
     }
 
-    putOnField () {
+    swapPlaces (newPosition, oldPosition, direction) {
         if (this.state.selected) {
             const player = this.state.selected
-            const newPlayers = this.state.playersOnField.concat(player)
-            const dropPlayer = this.state.playersOnBench.filter((_player) => {
+            const newPlayers = newPosition.concat(player)
+            const dropPlayer = oldPosition.filter((_player) => {
                 return _player !== player
             })
 
-            this.setState({ selected: '', playersOnField: newPlayers, playersOnBench: dropPlayer })
-        } else {
-            return
-        }
-    }
+            if (direction) {
+                this.setState({ selected: '', playersOnField: newPlayers, playersOnBench: dropPlayer })
+            } else {
+                this.setState({ selected: '', playersOnBench: newPlayers, playersOnField: dropPlayer })
+            }
 
-    putOnBench () {
-        if (this.state.selected) {
-            const player = this.state.selected
-            const newPlayers = this.state.playersOnBench.concat(player)
-            const dropPlayer = this.state.playersOnField.filter((_player) => {
-                return _player !== player
-            })
+            const remove = document.getElementById('remove')
+            const putOnField = document.getElementById('put-on-field')
+            const putOnBench = document.getElementById('put-on-bench')
 
-            this.setState({ selected: '', playersOnBench: newPlayers, playersOnField: dropPlayer })
+            remove.disabled = true
+            putOnBench.disabled = true
+            putOnField.disabled = true
+
         } else {
             return
         }
@@ -95,12 +119,11 @@ class Main extends Component {
     render () {
         return (
             <div>
-                <h1>Football team</h1>
                 <section>
                     <div className="players-list">
                         <div className="bench-header">
                             <form onSubmit={this.handleAdd.bind(this)}>
-                                <input onChange={this.handleChange.bind(this)} value={this.state.player}/>
+                                <input placeholder="Enter new player ..." onChange={this.handleChange.bind(this)} value={this.state.player}/>
                                 <button className="add">
                                     Add
                                 </button>
@@ -109,30 +132,20 @@ class Main extends Component {
                                 Remove
                             </button>
                         </div>
-                        <ol>
-                            { this.state.playersOnBench.map((playerOnBench, i) => {
-                                return <li key={playerOnBench} onClick={(event) => {
-                                        this.handleSelect(playerOnBench)
-                                    }}>
-                                    { playerOnBench }
-                                </li>
-                            })}
-                        </ol>
+                        <PlayersList
+                            items={ this.state.playersOnBench }
+                            handleSelect = { this.handleSelect.bind(this) }
+                        />
                     </div>
                     <div className="button-wrapper">
-                        <button id="put-on-field" onClick={this.putOnField.bind(this)}>Right</button>
-                        <button id="put-on-bench" onClick={this.putOnBench.bind(this)}>Left</button>
+                        <button id="put-on-field" onClick={this.swapPlaces.bind(this, this.state.playersOnField, this.state.playersOnBench, true)} />
+                        <button id="put-on-bench" onClick={this.swapPlaces.bind(this, this.state.playersOnBench, this.state.playersOnField, false)} />
                     </div>
                     <div className="players-list">
-                        <ol>
-                            { this.state.playersOnField.map((playerOnField, i) => {
-                                return <li key={playerOnField} onClick={(event) => {
-                                        this.handleSelect(playerOnField)
-                                    }}>
-                                    { playerOnField }
-                                </li>
-                            })}
-                        </ol>
+                        <PlayersList
+                            items={ this.state.playersOnField }
+                            handleSelect = { this.handleSelect.bind(this) }
+                        />
                     </div>
                 </section>
             </div>
